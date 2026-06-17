@@ -1,0 +1,17 @@
+# Dependency folder
+node_modules/
+
+# Local Environment Variables (Sangat Rahasia!)
+.env
+
+# Database Lokal SQLite
+database.sqlite
+
+# Folder Gambar Hasil Upload Uji Coba
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs
+*.log
+npm-debug.log*
