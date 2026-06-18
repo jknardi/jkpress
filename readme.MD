@@ -6,6 +6,12 @@
 
 ## English
 
+
+### 📸 Homepage Preview
+<!-- Jalur relatif dari root proyek ke file gambar Anda -->
+![JkPress Premium Botanical Emerald Theme](assets/jkpress_cms.png)
+
+
 JkPress is a modern, ultra-lightweight, and lightning-fast Headless Content Management System (CMS) built from scratch using Node.js, Express.js, and SQLite. It is designed to be a highly flexible and fast alternative to WordPress, tailor-made for modern press, blogs, and content platforms. 
 
 JkPress is fully optimized for the modern web era, featuring robust built-in SEO architectures, structured Schema Markup, and AI-friendly configurations that allow AI Search Engines (like Perplexity, ChatGPT, Gemini) to easily index and reference your content.

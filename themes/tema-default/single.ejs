@@ -1,0 +1,33 @@
+<%- include('partials/header', { title: post.seo_title || post.title, desc: post.seo_description || post.summary }) %>
+
+<main class="max-w-3xl mx-auto px-4 py-12">
+    <article class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-slate-100">
+        
+        <!-- Informasi Lokasi Kejadian (Geo-Targeting Modern) -->
+        <% if (post.geo_location) { %>
+            <div class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-4">
+                📍 <%= post.geo_location %>
+            </div>
+        <% } %>
+
+        <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight mb-4">
+            <%= post.title %>
+        </h1>
+
+        <div class="text-sm text-slate-400 font-medium mb-8 flex gap-4">
+            <span>Diterbitkan: <%= new Date(post.created_at).toLocaleDateString('id-ID', { dateStyle: 'long' }) %></span>
+            <span>👁️ <%= post.views %> Pembaca</span>
+        </div>
+
+        <% if(post.featured_image) { %>
+            <img class="w-full h-[400px] object-cover rounded-2xl mb-8 shadow-sm" src="<%= post.featured_image %>" alt="<%= post.title %>">
+        <% } %>
+
+        <!-- Isi Konten Utama Utama (Render HTML Berita) -->
+        <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed text-lg space-y-6">
+            <%- post.content %>
+        </div>
+    </article>
+</main>
+
+<%- include('partials/footer') %>

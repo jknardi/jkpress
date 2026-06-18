@@ -1,5 +1,8 @@
 const express = require('express');
 const path = require('path');
+
+const db = require('./config/database'); 
+
 const multer = require('multer');
 const cors = require('cors'); // Mengaktifkan modul CORS
 const rateLimit = require('express-rate-limit'); // Mengaktifkan modul Rate Limit
@@ -14,6 +17,38 @@ require('dotenv').config();
 
 
 const app = express();
+
+
+
+// ==========================================
+// CONFIGURASI MESIN TEMA DINAMIS (EJS)
+// ==========================================
+app.set('view engine', 'ejs');
+
+// Middleware untuk mendeteksi tema aktif dari database di setiap request halaman publik
+app.use((req, res, next) => {
+  db.get("SELECT value FROM settings WHERE key = 'active_theme'", [], (err, row) => {
+    const activeTheme = (row && row.value) ? row.value : 'tema-default';
+    
+    // Set folder views Express secara dinamis ke folder tema yang aktif
+    app.set('views', path.join(__dirname, 'themes', activeTheme));
+    
+    // Simpan info tema aktif ke objek res.locals agar bisa diakses di route mana saja
+    res.locals.activeTheme = activeTheme;
+    next();
+  });
+});
+
+// Menyediakan akses file statis (CSS/JS) milik masing-masing tema secara dinamis
+app.use('/assets', (req, res, next) => {
+  // res.locals.activeTheme didapat dari middleware deteksi tema di atasnya
+  const themePublicPath = path.join(__dirname, 'themes', res.locals.activeTheme, 'public');
+  express.static(themePublicPath)(req, res, next);
+});
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use(express.json());
+
+
 
 // ==========================================
 // CONFIGURASI KEAMANAN GLOBAL (WAJIB DI ATAS)
@@ -47,6 +82,8 @@ const loginLimiter = rateLimit({
 // JALUR RUTE API (ROUTES)
 // ==========================================
 
+app.use('/assets/theme-magazine', express.static(path.join(__dirname, 'themes', 'theme-magazine', 'public')));
+
 // Akses Folder Media Publik
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
@@ -54,6 +91,62 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.post('/api/auth/register', authController.register);
 app.post('/api/auth/login', loginLimiter, authController.login); 
 app.post('/api/auth/logout', authMiddleware, authController.logout); // RUTE BARU: Logout
+
+
+
+// ==========================================
+// PERUBAHAN RUTE PUBLIK: MERENDER TAMPILAN WEB (EJS)
+// ==========================================
+
+// 1. Tampilan Halaman Beranda (Daftar Artikel)
+app.get('/', (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = 6; // Tampilkan 6 artikel kekinian berbentuk grid di frontend
+  const offset = (page - 1) * limit;
+
+  db.all('SELECT id, title, slug, summary, featured_image, created_at FROM posts WHERE status = "published" ORDER BY created_at DESC LIMIT ? OFFSET ?', [limit, offset], (err, posts) => {
+    db.get('SELECT COUNT(*) as total FROM posts WHERE status = "published"', [], (err, countRow) => {
+      const totalPages = Math.ceil(countRow.total / limit);
+      
+      // Mengirimkan data langsung ke file index.ejs di folder tema aktif
+      res.render('index', { 
+        posts, 
+        currentPage: page, 
+        totalPages,
+        siteTitle: 'JkPress News',
+        siteDesc: 'Platform berita pers super cepat masa kini.'
+      });
+    });
+  });
+});
+
+// 2. Tampilan Halaman Detail Artikel (Single Post)
+app.get('/posts/:slug', (req, res) => {
+  // Tambah views otomatis
+  db.run('UPDATE posts SET views = views + 1 WHERE slug = ?', [req.params.slug]);
+
+  db.get('SELECT * FROM posts WHERE slug = ? AND status = "published"', [req.params.slug], (err, post) => {
+    if (!post) return res.status(404).send('Artikel tidak ditemukan');
+
+    // Integrasi Otomatis Skema JSON-LD untuk AI & Google agar AMAN & Terpusat
+    const schemaMarkup = {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": post.seo_title || post.title,
+      "description": post.seo_description || post.summary,
+      "image": [post.featured_image || "/uploads/default.jpg"],
+      "datePublished": post.created_at,
+      "author": { "@type": "Organization", "name": "JkPress Team" }
+    };
+
+    // Kirim data artikel dan meta-data keamanan ke file single.ejs
+    res.render('single', { 
+      post, 
+      schemaJson: JSON.stringify(schemaMarkup) 
+    });
+  });
+});
+
 
 // Rute Publik Konten
 app.get('/api/posts', postController.getAllPosts);

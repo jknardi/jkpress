@@ -1,0 +1,44 @@
+<%- include('partials/header', { title: post.seo_title || post.title, desc: post.seo_description || post.summary }) %>
+
+<main class="max-w-4xl mx-auto px-6 py-16 md:py-20">
+    <article class="bg-white rounded-3xl p-6 md:p-12 border border-emerald-100/70 shadow-xs">
+        
+        <!-- Location Feature (Geo-Targeting Green Label) -->
+        <% if (post.geo_location) { %>
+            <div class="inline-flex items-center gap-1.5 bg-emerald-50 border border-emerald-200/60 text-emerald-800 text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-md mb-6">
+                📍 Region: <%= post.geo_location %>
+            </div>
+        <% } %>
+
+        <h1 class="font-serif text-4xl md:text-5xl font-bold tracking-tight text-emerald-950 leading-tight mb-6">
+            <%= post.title %>
+        </h1>
+
+        <!-- Blockquote Summary Section -->
+        <p class="text-lg md:text-xl text-stone-600 font-light leading-relaxed mb-8 border-l-4 border-emerald-700 pl-4 italic bg-emerald-50/40 py-2 rounded-r-lg">
+            <%= post.summary %>
+        </p>
+
+        <!-- Stats Bar -->
+        <div class="border-y border-stone-100 py-4 mb-10 flex justify-between items-center text-xs font-bold tracking-widest uppercase text-stone-400">
+            <div class="text-emerald-900">By JkPress Correspondent</div>
+            <div class="flex gap-4">
+                <span><%= new Date(post.created_at).toLocaleDateString('en-US', { dateStyle: 'long' }) %></span>
+                <span class="text-emerald-700">👁️ <%= post.views %> reads</span>
+            </div>
+        </div>
+
+        <% if(post.featured_image) { %>
+            <figure class="mb-12">
+                <img class="w-full h-auto max-h-[500px] object-cover rounded-2xl shadow-xs" src="<%= post.featured_image %>" alt="<%= post.title %>">
+            </figure>
+        <% } %>
+
+        <!-- Premium Magazine Typography -->
+        <div class="prose prose-emerald max-w-none text-stone-800 leading-relaxed text-lg font-light space-y-6 first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:text-emerald-900 first-letter:float-left first-letter:mr-3 first-letter:mt-1">
+            <%- post.content %>
+        </div>
+    </article>
+</main>
+
+<%- include('partials/footer') %>

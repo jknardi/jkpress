@@ -1,0 +1,91 @@
+<%- include('partials/header', { title: siteTitle, desc: siteDesc }) %>
+
+<main class="max-w-7xl mx-auto px-6 py-12 md:py-16">
+    
+    <!-- Top Greeting Section with Green Theme -->
+    <div class="border-b border-emerald-200/60 pb-8 mb-12 flex flex-col md:flex-row justify-between items-baseline gap-4">
+        <div>
+            <span class="text-emerald-700 font-bold text-xs tracking-widest uppercase bg-emerald-50 px-2.5 py-1 rounded-sm">Independent Press</span>
+            <h1 class="font-serif text-4xl md:text-6xl font-bold tracking-tight text-emerald-950 mt-3">The Botanical Journal.</h1>
+            <p class="mt-3 text-base text-stone-500 max-w-xl font-light">Eco-systematic press platform built on Node.js core. Encrypted and isolated by jk-zeto cryptographic layers.</p>
+        </div>
+        <div class="text-xs font-bold tracking-widest uppercase text-emerald-800 bg-emerald-50 border border-emerald-100 px-4 py-2 rounded-md shadow-xs">
+            <%= new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+        </div>
+    </div>
+
+    <% if (posts.length === 0) { %>
+        <!-- Placeholder Template (Jika Database Kosong) -->
+        <div class="grid gap-12 lg:grid-cols-3">
+            <div class="lg:col-span-2 border-r border-emerald-100 pr-0 lg:pr-12">
+                <div class="bg-gradient-to-br from-emerald-800 to-emerald-950 h-96 w-full mb-6 rounded-xl flex items-center p-8 text-white relative overflow-hidden shadow-md">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div class="max-w-xl z-10">
+                        <span class="text-xs font-bold tracking-widest uppercase text-emerald-300">Welcome Note</span>
+                        <h2 class="font-serif text-3xl md:text-5xl font-bold mt-2 mb-4 leading-tight">Your database is ready. Let's write the first green journalism report.</h2>
+                        <p class="text-emerald-100/80 font-light text-sm">Please log in to your upcoming admin panel to publish real articles. This beautiful placeholder will automatically swap with your content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h3 class="font-serif text-xl font-bold text-emerald-950 border-b-2 border-emerald-800 pb-2 mb-4">Core Architecture</h3>
+                <div class="p-4 bg-white rounded-xl border border-emerald-100 shadow-xs">
+                    <span class="text-xs font-bold text-emerald-700 tracking-wider uppercase">Security Verified</span>
+                    <h4 class="font-serif text-base font-bold mt-1 text-stone-900">Stateless AES-256-GCM Token via jk-zeto active.</h4>
+                </div>
+                <div class="p-4 bg-white rounded-xl border border-emerald-100 shadow-xs">
+                    <span class="text-xs font-bold text-emerald-700 tracking-wider uppercase">Database Speed</span>
+                    <h4 class="font-serif text-base font-bold mt-1 text-stone-900">Zero network overhead with embedded SQLite engine.</h4>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <!-- Real Content Rendering -->
+        <!-- 1. Hero Feature Article -->
+        <% const heroPost = posts[0]; %>
+        <div class="grid gap-12 lg:grid-cols-3 border-b border-emerald-100 pb-12 mb-12 items-center">
+            <div class="lg:col-span-2">
+                <% if(heroPost.featured_image) { %>
+                    <img class="h-[450px] w-full object-cover rounded-2xl shadow-sm border border-emerald-100/50" src="<%= heroPost.featured_image %>" alt="<%= heroPost.title %>">
+                <% } else { %>
+                    <div class="h-[450px] w-full bg-gradient-to-br from-emerald-900 to-stone-900 rounded-2xl flex items-center justify-center text-emerald-100 font-serif text-xl">Asset Canvas Dashboard</div>
+                <% } %>
+            </div>
+            <div class="flex flex-col h-full justify-between py-2">
+                <div>
+                    <span class="text-xs font-bold tracking-widest uppercase text-emerald-700 bg-emerald-50 px-2 py-1 rounded">Top Story</span>
+                    <h2 class="font-serif text-3xl md:text-4xl font-bold tracking-tight text-emerald-950 mt-3 mb-4 hover:text-emerald-700 transition duration-200 leading-tight">
+                        <a href="/posts/<%= heroPost.slug %>"><%= heroPost.title %></a>
+                    </h2>
+                    <p class="text-stone-600 font-light leading-relaxed text-sm md:text-base"><%= heroPost.summary %></p>
+                </div>
+                <div class="text-xs font-bold tracking-widest uppercase text-emerald-800/60 mt-6 flex items-center gap-2">
+                    <span>📅 <%= new Date(heroPost.created_at).toLocaleDateString('en-US', { dateStyle: 'medium' }) %></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Grid System for Next Articles -->
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            <% posts.slice(1).forEach(post => { %>
+                <article class="bg-white rounded-2xl p-6 border border-emerald-100/60 shadow-xs hover:shadow-md hover:border-emerald-200 transition duration-300 flex flex-col justify-between">
+                    <div>
+                        <% if(post.featured_image) { %>
+                            <img class="h-48 w-full object-cover rounded-xl mb-4" src="<%= post.featured_image %>" alt="<%= post.title %>">
+                        <% } %>
+                        <span class="text-xs font-bold tracking-widest uppercase text-emerald-600">Latest Dispatch</span>
+                        <h3 class="font-serif text-xl font-bold text-emerald-950 mt-1 mb-2 hover:text-emerald-700 transition duration-200">
+                            <a href="/posts/<%= post.slug %>"><%= post.title %></a>
+                        </h3>
+                        <p class="text-stone-500 font-light text-sm line-clamp-3 mb-6"><%= post.summary %></p>
+                    </div>
+                    <div class="text-xs font-bold text-emerald-800/50 uppercase tracking-wider pt-4 border-t border-stone-100">
+                        <%= new Date(post.created_at).toLocaleDateString('en-US', { dateStyle: 'medium' }) %>
+                    </div>
+                </article>
+            <% }) %>
+        </div>
+    <% } %>
+</main>
+
+<%- include('partials/footer') %>

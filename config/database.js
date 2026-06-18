@@ -50,6 +50,12 @@ db.serialize(() => {
     db.run(`INSERT OR IGNORE INTO settings (key, value) VALUES ('site_title', 'JkPress - CMS Super Cepat')`);
     db.run(`INSERT OR IGNORE INTO settings (key, value) VALUES ('site_description', 'Platform pers modern masa kini')`);
   });
+
+
+  //5 theme
+  
+  db.run(`INSERT OR IGNORE INTO settings (key, value) VALUES ('active_theme', 'theme-magazine')`);
+
 });
 
 module.exports = db;
