@@ -40,7 +40,7 @@ Make sure you have Node.js installed on your machine.
 #### Installation
 1. Clone this repository:
    ```bash
-   git clone https://github.com
+   git clone https://github.com/jknardi/jkpress.git
    cd lightweight-cms
    ```
 2. Install dependencies:
@@ -89,7 +89,7 @@ Pastikan Anda sudah menginstal Node.js di komputer Anda.
 #### Instalasi
 1. Klon repositori ini:
    ```bash
-   git clone https://github.com
+   git clone https://github.com/jknardi/jkpress.git
    cd lightweight-cms
    ```
 2. Instal library pendukung:

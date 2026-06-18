@@ -1,7 +1,7 @@
 {
   "name": "jkpress",
   "version": "1.0.0",
-  "description": "",
+  "description": "JkPress is a modern, ultra-lightweight, and lightning-fast Headless Content Management System (CMS) built from scratch using Node.js, Express.js, and SQLite. It is designed to be a highly flexible and fast alternative to WordPress, tailor-made for modern press, blogs, and content platforms. ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
