@@ -108,3 +108,6 @@ Pastikan Anda sudah menginstal Node.js di komputer Anda.
 
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
+
+[![DOI](https://zenodo.org)](https://doi.org/10.5281/zenodo.24222568)
+
