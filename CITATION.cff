@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this software in your research or production environment, please cite it as below."
+authors:
+  - family-names: "Kuswoyo"
+    given-names: "Joko Nardi"
+    affiliation: "Independent Researcher / Software Engineer"
+title: "JkPress: Ultra-Lightweight and High-Performance Headless Content Management System Built with Node.js"
+version: 1.0.0
+date-released: 2026-11-14
+url: "https://github.com"
+repository-code: "https://github.com"
+license: MIT
+keywords:
+  - headless-cms
+  - nodejs
+  - sqlite
+  - seo-automation
+  - geo-targeting
+  - lightweight-cms
+abstract: >
+  JkPress is an ultra-lightweight, high-performance Headless Content Management System (CMS) 
+  engineered from scratch using Node.js, Express.js, and SQLite. Designed as a streamlined 
+  alternative to heavy monolithic CMS platforms, JkPress eliminates Object-Relational Mapping (ORM) 
+  overhead by utilizing raw SQL execution, custom AES-256-GCM session encryption (jk-zeto), 
+  built-in JSON-LD Schema Markup for AI search engine optimization, and native geo-targeting 
+  capabilities for modern digital journalism.
