@@ -111,5 +111,12 @@ Pastikan Anda sudah menginstal Node.js di komputer Anda.
 ## License
 Distributed under the MIT License. See `LICENSE` for more information.
 
+## Citation
+
+If you use JkPress in your project or research, please cite it as:
+
+> Kuswoyo, J. N. (2026). *JkPress: An Ultra-Lightweight and AI-Optimized Headless Content Management System Built on Node.js and SQLite*. Zenodo. https://doi.org/10.5281/zenodo.24222568
+
+
 
 
